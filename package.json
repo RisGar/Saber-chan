@@ -1,0 +1,28 @@
+{
+  "name": "vmebot",
+  "version": "1.0.0",
+  "description": "A discord bot",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RisGar/vmeBOT.git"
+  },
+  "keywords": [
+    "discord",
+    "bot"
+  ],
+  "author": "vme",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/RisGar/vmeBOT/issues"
+  },
+  "homepage": "https://github.com/RisGar/vmeBOT#readme",
+  "dependencies": {
+    "discord.js": "^12.0.2",
+    "jikanjs": "^0.7.0",
+    "request": "^2.88.2"
+  }
+}

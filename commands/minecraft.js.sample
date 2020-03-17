@@ -1,0 +1,49 @@
+module.exports = {
+  name: "minecraft",
+  description: "Minecraft Server Online Status",
+  args: true,
+  usage: "<server>",
+  execute(message, args) {
+    const request = require("request");
+
+    argsLowercase = args.join(" ").toLowerCase();
+
+    var serverData = {};
+
+    if (argsLowercase === "server_arg") {
+      serverData.mcIP = "server_ip";
+      serverData.mcPort = 25565;
+
+      loadServerData();
+    } else {
+      message.channel.send(
+        "The server you listed is not included in this bot."
+      );
+    }
+
+    function loadServerData() {
+      const url =
+        "http://mcapi.us/server/status?ip=" +
+        serverData.mcIP +
+        "&port=" +
+        serverData.mcPort;
+      request(url, function(err, response, body) {
+        if (err) {
+          console.log(err);
+          return message.reply("Error getting Minecraft server status...");
+        }
+        body = JSON.parse(body);
+        let status = "*Minecraft server is currently offline*";
+        if (body.online == true && body.server.name != '"§4● Offline"') {
+          status = "**Minecraft** server is **online**  -  ";
+          if (body.players.now) {
+            status += "**" + body.players.now + "** people are playing!";
+          } else {
+            status += "*Nobody is playing!*";
+          }
+        }
+        message.reply(status);
+      });
+    }
+  }
+};
