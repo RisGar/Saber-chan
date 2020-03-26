@@ -47,7 +47,8 @@ client.on("message", message => {
 
   try {
     command.execute(message, args);
-  } catch (error) {
+  }
+ catch (error) {
     console.error(error);
     message.reply("Sorry, there was an error trying to execute that command\nPlease try again later or contact vme");
   }

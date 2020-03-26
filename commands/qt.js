@@ -4,5 +4,5 @@ module.exports = {
   args: false,
   execute(message) {
     message.channel.send(`no u, ${message.author}`);
-  }
+  },
 };
