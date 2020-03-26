@@ -5,5 +5,5 @@ module.exports = {
   usage: '<arg>...',
   execute(message, args) {
     message.channel.send(`Command name: ${command}\nArguments: ${args}`);
-  }
+  },
 };

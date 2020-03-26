@@ -6,5 +6,5 @@ module.exports = {
     message.channel.send("https://github.com/RisGar/vmeBOT");
     message.channel.send("<:BAAASAAAAAKAAAAAAA:682622908551397432>");
     message.channel.send("Private rn doe sry :(");
-  }
+  },
 };
