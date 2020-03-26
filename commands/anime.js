@@ -16,7 +16,7 @@ module.exports = {
             title: result.title,
             episodes: result.episodes,
             synopsis: result.synopsis,
-            url: result.url
+            url: result.url,
           };
         });
         message.channel.send("Title: " + myProcessedData[0].title);
@@ -26,8 +26,8 @@ module.exports = {
       .catch(err => {
         console.error(err);
         message.channel.send(
-          "Sorry your request couldn't be executed \nPlease try later or contact vme"
+          "Sorry your request couldn't be executed \nPlease try later or contact vme",
         );
       });
-  }
+  },
 };
