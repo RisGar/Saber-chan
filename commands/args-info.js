@@ -4,7 +4,10 @@ module.exports = {
   args: true,
   usage: '<arg>...',
   execute(message, args) {
-    const command = client.commands.get(commandName);
-    message.channel.send(`Command name: ${command}\nArguments: ${args}`);
+    for(i = 0; i < args.length; i++){
+
+      message.channel.send(`Argument: ${args[i]}`);
+
+    }
   },
 };
