@@ -1,6 +1,6 @@
 module.exports = {
   name: "qt",
-  description: "Call vme-chan a qt",
+  description: "Call Saber-chan a qt",
   args: false,
   execute(message) {
     message.channel.send(`no u, ${message.author}`);

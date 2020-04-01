@@ -22,6 +22,7 @@
   "homepage": "https://github.com/RisGar/vmeBOT#readme",
   "dependencies": {
     "discord.js": "^12.0.2",
+    "express": "^4.17.1",
     "jikanjs": "^0.7.0",
     "request": "^2.88.2"
   }

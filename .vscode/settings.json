@@ -5,5 +5,8 @@
         "boop",
         "jikanjs",
         "vegeta"
-    ]
+    ],
+    "files.exclude": {
+        "**/**.sample": true
+    }
 }
