@@ -8,7 +8,7 @@ client.commands = new Discord.Collection();
 
 const commandFiles = fs
   .readdirSync("./commands")
-  .filter(file => file.endsWith(".js"));
+  .filter((file) => file.endsWith(".js"));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -21,7 +21,7 @@ client.once("ready", () => {
   console.log("Ready!");
 });
 
-client.on("message", message => {
+client.on("message", (message) => {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(" ");
@@ -47,9 +47,10 @@ client.on("message", message => {
 
   try {
     command.execute(message, args);
-  }
- catch (error) {
+  } catch (error) {
     console.error(error);
-    message.reply("Sorry, there was an error trying to execute that command\nPlease try again later or contact vme");
+    message.reply(
+      "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
+    );
   }
 });

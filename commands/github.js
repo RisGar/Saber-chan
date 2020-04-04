@@ -4,6 +4,9 @@ module.exports = {
   args: false,
   execute(message) {
     message.channel.send("https://github.com/RisGar/vmeBOT");
-    message.channel.send("<:BAAASAAAAAKAAAAAAA:682622908551397432>");
+
+    if (message.guild && message.guild.id == "671058041067798538") {
+      message.channel.send("<:BAAASAAAAAKAAAAAAA:682622908551397432>");
+    }
   },
 };
