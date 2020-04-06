@@ -13,11 +13,11 @@ module.exports = {
 
     function loadServerData() {
       const url = `http://mcapi.us/server/status?ip=${mcIP}&port=${mcPort}`;
-      request(url, function (err, response, body) {
+      request(url, function(err, response, body) {
         if (err) {
           console.log(err);
           return message.reply(
-            "Error getting Minecraft server status... \nPlease specify a valid server name or ip"
+            "Error getting Minecraft server status... \nPlease specify a valid server name or ip",
           );
         }
         body = JSON.parse(body);
@@ -26,7 +26,8 @@ module.exports = {
           status = `${mcIP} is **online** and `;
           if (body.players.now) {
             status += `${body.players.now} people are playing!`;
-          } else {
+          }
+ else {
             status += "*nobody is playing!*";
           }
         }

@@ -6,7 +6,7 @@ const bodyParser = require("body-parser");
 class WebSocket {
   constructor(token, port, client) {
     this.token = token;
-    //this.port = port;
+    // this.port = port;
     this.client = client;
 
     this.app = express();
@@ -15,8 +15,8 @@ class WebSocket {
       hbs({
         extname: "hbs",
         defaultLayout: "layout",
-        layoutsDir: __dirname + "/layouts"
-      })
+        layoutsDir: __dirname + "/layouts",
+      }),
     );
     this.app.set("views", path.join(__dirname, "views"));
     this.app.set("view engine", "hbs");
@@ -39,15 +39,14 @@ class WebSocket {
 
     this.app.get("/", (req, res) => {
 
-        let _token = req.query.token;
+        const _token = req.query.token;
 
         if(!this.checkToken(_token)) {
 
-            
 
         }
 
-    })
+    });
 
-  };
+  }
 }
