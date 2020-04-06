@@ -4,7 +4,7 @@ module.exports = {
   args: true,
   usage: '<arg>...',
   execute(message, args) {
-    for(i = 0; i < args.length; i++){
+    for(i = 0; i < args.length; i++) {
 
       message.channel.send(`Argument: ${args[i]}`);
 
