@@ -23,7 +23,7 @@ client.once("ready", () => {
 
 client.on("message", (message) => {
 
-  //console.log(message.member.id);
+  // console.log(message.member.id);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
