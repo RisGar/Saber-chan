@@ -1,6 +1,7 @@
 module.exports = {
   name: "github",
   description: "Show link of Github repository",
+  ownerOnly: true,
   args: false,
   execute(message) {
     message.channel.send("https://github.com/RisGar/vmeBOT");

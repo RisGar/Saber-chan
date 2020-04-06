@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { prefix, token } = require("./config.json");
+const { prefix, owner_id , token } = require("./config.json");
 const fs = require("fs");
 
 const client = new Discord.Client();
@@ -22,6 +22,9 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
+
+  //console.log(message.member.id);
+
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(" ");
@@ -32,7 +35,11 @@ client.on("message", (message) => {
   const command = client.commands.get(commandName);
 
   if (command.guildOnly && message.channel.type !== "text") {
-    return message.reply("Sorry, I can't execute that command inside DMs :(");
+    return message.channel.send("Sorry, I can't execute that command inside DMs :(");
+  }
+
+  if (command.ownerOnly && message.author.id !== owner_id) {
+    return message.channel.send("Sorry, this command is owner only :(");
   }
 
   if (command.args && !args.length) {
