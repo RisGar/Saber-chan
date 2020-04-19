@@ -123,7 +123,7 @@ class WebSocket {
         return;
       }
 
-      console.log(channelid);
+      //console.log(channelid);
 
       let chanids = [];
 
@@ -147,7 +147,7 @@ class WebSocket {
 
       //console.log(chan);
 
-      console.log(`Sending message "${text}" to the channel "${chan.name}"`);
+      console.log(`Sending message "${text}" to the channel "${chan.name}" (Websocket)`);
 
       if (chan) {
         chan.send(text);
