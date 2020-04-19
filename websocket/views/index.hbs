@@ -1,21 +1,37 @@
 <iframe style="display: none;" name="dummyframe" id="dummyframe"></iframe>
-<form
-  id="messageForm"
-  action="/sendMessage"
-  method="POST"
-  target="dummyframe"
->
-  <input type="hidden" name="token" value="{{token}}" />
-  <select name="channelid" class="select">
-    {{#each chans}}
-      <option value="{{this.id}}">
-        {{this.name}}
-      </option>
-    {{/each}}
-  </select>
-  <input type="text" name="text" class="input" id="text" placeholder="Message" />
-  <input type="button" class="button" id="submitButton" value="Send" onclick="submit_form();" />
-</form>
+<div class="zenbu">
+  <form
+    id="messageForm"
+    action="/sendMessage"
+    method="POST"
+    target="dummyframe"
+  >
+    <input type="hidden" name="token" value="{{token}}" />
+    <div class="select-div">
+      <select name="channelid" class="select">
+        {{#each chans}}
+          <option value="{{this.id}}" class="option">
+            {{this.name}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <input
+      type="text"
+      name="text"
+      class="input"
+      id="text"
+      placeholder="Message"
+    />
+    <input
+      type="button"
+      class="button"
+      id="submitButton"
+      value="Send"
+      onclick="submit_form();"
+    />
+  </form>
+</div>
 <script>
   function submit_form() {
 
@@ -37,4 +53,5 @@
   }
 }); 
 
+selectObjects = document.getElementsByClassName("select");
 </script>
