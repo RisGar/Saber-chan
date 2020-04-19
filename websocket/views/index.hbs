@@ -6,14 +6,14 @@
   target="dummyframe"
 >
   <input type="hidden" name="token" value="{{token}}" />
-  <select name="channelid">
+  <select name="channelid" class="select">
     {{#each chans}}
       <option value="{{this.id}}">
         {{this.name}}
       </option>
     {{/each}}
   </select>
-  <input type="text" name="text" id="text" placeholder="Message" />
+  <input type="text" name="text" class="input" id="text" placeholder="Message" />
   <input type="button" class="button" id="submitButton" value="Send" onclick="submit_form();" />
 </form>
 <script>

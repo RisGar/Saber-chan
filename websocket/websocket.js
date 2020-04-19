@@ -42,7 +42,7 @@ class WebSocket {
 
       if (!this.checkToken(_token)) {
         res.render("enter_token", {
-          title: "Saber-chan Webinterface: Enter Token"
+          title: "Saber-chan Webinterface: Enter Token",
         });
         return;
       }
@@ -50,7 +50,7 @@ class WebSocket {
       let chans = [];
 
       this.client.guilds.cache.forEach((c) => {
-        chans.push({ id: c.id, name: `**${c.name}**` });
+        chans.push({ id: "Server", name: `**${c.name}**` });
         c.channels.cache
           .filter((c) => c.type == "text")
           .forEach((c) => {
@@ -67,7 +67,7 @@ class WebSocket {
       });
     });
 
-    this.app.post("/index", (req, res) => {
+    /*this.app.post("/index", (req, res) => {
 
       const _token = req.body.token
 
@@ -82,7 +82,7 @@ class WebSocket {
       let chans = [];
 
       this.client.guilds.cache.forEach((c) => {
-        chans.push({ id: c.id, name: `**${c.name}**` });
+        chans.push({ id: "Server", name: `**${c.name}**` });
         c.channels.cache
           .filter((c) => c.type == "text")
           .forEach((c) => {
@@ -98,7 +98,7 @@ class WebSocket {
         chans,
       });
 
-    })
+    })*/
 
     this.app.post("/sendMessage", (req, res) => {
       const _token = req.body.token;
@@ -106,6 +106,12 @@ class WebSocket {
       const channelid = req.body.channelid;
 
       if (!_token || !channelid || !text) {
+        console.log("No token, channelid or text");
+        return res.sendStatus(400);
+      }
+
+      if (channelid == "Server") {
+        console.log("Cannot send message to server");
         return res.sendStatus(400);
       }
 
@@ -116,6 +122,8 @@ class WebSocket {
         });
         return;
       }
+
+      console.log(channelid);
 
       let chanids = [];
 
@@ -139,9 +147,7 @@ class WebSocket {
 
       //console.log(chan);
 
-      console.log(
-        `Sending message "${text}" to the channel "${chan.name}"`
-      );
+      console.log(`Sending message "${text}" to the channel "${chan.name}"`);
 
       if (chan) {
         chan.send(text);
