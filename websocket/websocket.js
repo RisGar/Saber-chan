@@ -2,6 +2,7 @@ const path = require("path");
 const express = require("express");
 const hbs = require("express-handlebars");
 const bodyParser = require("body-parser");
+const logger = require("./logs/logger");
 
 class WebSocket {
   constructor(token, port, client) {
@@ -28,7 +29,7 @@ class WebSocket {
     this.registerRoots();
 
     this.server = this.app.listen(port, () => {
-      console.log(`Port: ${this.server.address().port}`);
+      new logger(1, `Port: ${this.server.address().port}`);
     });
   }
 
@@ -58,7 +59,7 @@ class WebSocket {
           });
       });
 
-      //console.log(chans);
+      // new logger(1, chans);
 
       res.render("index", {
         title: "Saber-chan Webinterface",
@@ -90,7 +91,7 @@ class WebSocket {
           });
       });
 
-      //console.log(chans);
+      //new logger(1, chans);
 
       res.render("index", {
         title: "Saber-chan Webinterface",
@@ -106,12 +107,12 @@ class WebSocket {
       const channelid = req.body.channelid;
 
       if (!_token || !channelid || !text) {
-        console.log("No token, channelid or text");
+        new logger(3, "No token, channelid or text");
         return res.sendStatus(400);
       }
 
       if (channelid == "Server") {
-        console.log("Cannot send message to server");
+        new logger(3, "Cannot send message to server");
         return res.sendStatus(400);
       }
 
@@ -123,7 +124,7 @@ class WebSocket {
         return;
       }
 
-      //console.log(channelid);
+      // new logger(1, channelid);
 
       let chanids = [];
 
@@ -135,19 +136,19 @@ class WebSocket {
           });
       });
 
-      //console.log(chanids);
+      // new logger(1, chanids);
 
       let chanArray = chanids.filter((o) => {
         return o.id == channelid;
       });
 
-      //console.log(chanArray);
+      // new logger(1, chanArray);
 
       let chan = chanArray[0];
 
-      //console.log(chan);
+      // new logger(1, chan);
 
-      console.log(`Sending message "${text}" to the channel "${chan.name}" (Websocket)`);
+      new logger(1, `Sending message "${text}" to the channel "${chan.name}" (Websocket)`);
 
       if (chan) {
         chan.send(text);

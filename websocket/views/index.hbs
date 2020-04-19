@@ -1,5 +1,5 @@
 <iframe style="display: none;" name="dummyframe" id="dummyframe"></iframe>
-<div class="zenbu">
+<div class="zenbu-form">
   <form
     id="messageForm"
     action="/sendMessage"
@@ -41,17 +41,12 @@
 
   }
 
-  text = document.getElementById("text");
+  document.getElementById("text").addEventListener("keyup", function(event) {
 
-  text.addEventListener("keyup", function(event) {
-  // Number 13 is the "Enter" key on the keyboard
   if (event.keyCode === 13) {
-    // Cancel the default action, if needed
     event.preventDefault();
-    // Trigger the button element with a click
-    document.getElementById("submitButton").click();
-  }
-}); 
 
-selectObjects = document.getElementsByClassName("select");
+    submit_form();
+  }
+});
 </script>

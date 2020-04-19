@@ -2,6 +2,7 @@ const Discord = require("discord.js");
 const { prefix, owner_id, token, webtoken } = require("./config.json");
 const fs = require("fs");
 const WS = require("./websocket/websocket");
+const logger = require("./websocket/logs/logger");
 
 const client = new Discord.Client();
 
@@ -21,11 +22,11 @@ for (const file of commandFiles) {
 client.login(token);
 
 client.once("ready", () => {
-  console.log("Ready!");
+  new logger(1, "Ready!");
 });
 
 client.on("message", (message) => {
-  // console.log(message.member.id);
+  // new logger(0, message.member.id);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
@@ -58,6 +59,13 @@ client.on("message", (message) => {
 
   try {
     command.execute(message, args);
+
+    fs.writeFile("./websocket/public/logs.txt", `${message}`, (err) => {
+      if (err) {
+        console.error(err);
+        return;
+      }
+    });
   } catch (error) {
     console.error(error);
     message.reply(

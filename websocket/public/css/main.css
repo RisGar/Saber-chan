@@ -8,7 +8,7 @@ body {
   background-color: #36393f;
 }
 
-.zenbu {
+.zenbu-form {
   padding-top: 30px;
   padding-left: 30px;
 }
@@ -64,12 +64,6 @@ body {
 .option {
   color: white;
   background-color: #40444b;
-}
-
-.option:hover {
-
-    background-color: #23272A;
-
 }
 
 .select-div {
