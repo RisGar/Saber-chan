@@ -4,7 +4,6 @@
   action="/sendMessage"
   method="POST"
   target="dummyframe"
-  onsubmit="this.submit(); this.reset();"
 >
   <input type="hidden" name="token" value="{{token}}" />
   <select name="channelid">
@@ -15,7 +14,7 @@
     {{/each}}
   </select>
   <input type="text" name="text" id="text" placeholder="Message" />
-  <input type="button" class="button" value="Send" onclick="submit_form();" />
+  <input type="button" class="button" id="submitButton" value="Send" onclick="submit_form();" />
 </form>
 <script>
   function submit_form() {
@@ -24,6 +23,18 @@
 
     document.getElementById("text").value = "";
 
-
   }
+
+  text = document.getElementById("text");
+
+  text.addEventListener("keyup", function(event) {
+  // Number 13 is the "Enter" key on the keyboard
+  if (event.keyCode === 13) {
+    // Cancel the default action, if needed
+    event.preventDefault();
+    // Trigger the button element with a click
+    document.getElementById("submitButton").click();
+  }
+}); 
+
 </script>
