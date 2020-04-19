@@ -1,0 +1,29 @@
+<iframe style="display: none;" name="dummyframe" id="dummyframe"></iframe>
+<form
+  id="messageForm"
+  action="/sendMessage"
+  method="POST"
+  target="dummyframe"
+  onsubmit="this.submit(); this.reset();"
+>
+  <input type="hidden" name="token" value="{{token}}" />
+  <select name="channelid">
+    {{#each chans}}
+      <option value="{{this.id}}">
+        {{this.name}}
+      </option>
+    {{/each}}
+  </select>
+  <input type="text" name="text" id="text" placeholder="Message" />
+  <input type="button" class="button" value="Send" onclick="submit_form();" />
+</form>
+<script>
+  function submit_form() {
+
+    document.getElementById("messageForm").submit();
+
+    document.getElementById("text").value = "";
+
+
+  }
+</script>

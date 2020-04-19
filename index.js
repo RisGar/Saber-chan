@@ -1,8 +1,11 @@
 const Discord = require("discord.js");
-const { prefix, owner_id , token } = require("./config.json");
+const { prefix, owner_id, token, webtoken } = require("./config.json");
 const fs = require("fs");
+const WS = require("./websocket/websocket");
 
 const client = new Discord.Client();
+
+const ws = new WS(webtoken, 6969, client);
 
 client.commands = new Discord.Collection();
 
@@ -22,7 +25,6 @@ client.once("ready", () => {
 });
 
 client.on("message", (message) => {
-
   // console.log(message.member.id);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -35,7 +37,9 @@ client.on("message", (message) => {
   const command = client.commands.get(commandName);
 
   if (command.guildOnly && message.channel.type !== "text") {
-    return message.channel.send("Sorry, I can't execute that command inside DMs :(");
+    return message.channel.send(
+      "Sorry, I can't execute that command inside DMs :("
+    );
   }
 
   if (command.ownerOnly && message.author.id !== owner_id) {
@@ -54,11 +58,10 @@ client.on("message", (message) => {
 
   try {
     command.execute(message, args);
-  }
- catch (error) {
+  } catch (error) {
     console.error(error);
     message.reply(
-      "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme",
+      "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
     );
   }
 });
