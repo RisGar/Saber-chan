@@ -5,7 +5,7 @@ module.exports = {
     usage: '<message>',
     execute(message, args) {
 
-        console.log(`Sending message "${args.join(" ")}" to the channel "${message.channel.name}" (Websocket)`);
+        console.log(`Sending message "${args.join(" ")}" to the channel "${message.channel.name}" (Command)`);
   
         message.channel.send(args.join(" "));
   
