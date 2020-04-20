@@ -1,3 +1,5 @@
+const logger = require("./logs/logger");
+
 module.exports = {
   name: "beep",
   description: "Beep!",

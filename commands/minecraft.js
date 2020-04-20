@@ -1,3 +1,5 @@
+const logger = require("./logs/logger");
+
 module.exports = {
   name: "minecraft",
   description: "Minecraft Server Online Status",
@@ -15,7 +17,7 @@ module.exports = {
       const url = `http://mcapi.us/server/status?ip=${mcIP}&port=${mcPort}`;
       request(url, function(err, response, body) {
         if (err) {
-          console.log(err);
+          new logger(3, err);
           return message.reply(
             "Error getting Minecraft server status... \nPlease specify a valid server name or ip",
           );

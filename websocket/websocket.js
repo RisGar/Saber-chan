@@ -68,39 +68,6 @@ class WebSocket {
       });
     });
 
-    /*this.app.post("/index", (req, res) => {
-
-      const _token = req.body.token
-
-      if (!this.checkToken(_token)) {
-        res.render("error", {
-          title: "Saber-chan Webinterface ERROR",
-          errtype: "Invalid Token",
-        });
-        return;
-      }
-
-      let chans = [];
-
-      this.client.guilds.cache.forEach((c) => {
-        chans.push({ id: "Server", name: `**${c.name}**` });
-        c.channels.cache
-          .filter((c) => c.type == "text")
-          .forEach((c) => {
-            chans.push({ id: c.id, name: c.name });
-          });
-      });
-
-      //new logger(1, chans);
-
-      res.render("index", {
-        title: "Saber-chan Webinterface",
-        token: _token,
-        chans,
-      });
-
-    })*/
-
     this.app.post("/sendMessage", (req, res) => {
       const _token = req.body.token;
       const text = req.body.text;

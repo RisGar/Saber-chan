@@ -1,3 +1,5 @@
+const logger = require("./logs/logger");
+
 module.exports = {
   name: "qt",
   description: "Call Saber-chan a qt",

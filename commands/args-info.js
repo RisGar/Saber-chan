@@ -1,3 +1,5 @@
+const logger = require("./logs/logger");
+
 module.exports = {
   name: "args-info",
   description: "List all arguments the user has given to the bot",

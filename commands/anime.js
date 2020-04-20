@@ -1,5 +1,6 @@
 const Discord = require("discord.js");
 const jikanjs = require("jikanjs");
+const logger = require("./logs/logger");
 
 module.exports = {
   name: "anime",
@@ -9,9 +10,9 @@ module.exports = {
   execute(message, args) {
     jikanjs
       .search("anime", args.join(" "), 1, { limit: 1 })
-      .then(response => {
-        console.log(response);
-        const myProcessedData = response.results.map(function(result) {
+      .then((response) => {
+        // new logger(1, response);
+        const myProcessedData = response.results.map(function (result) {
           return {
             mal_id: result.mal_id,
             title: result.title,
@@ -25,19 +26,11 @@ module.exports = {
         });
 
         const animeEmbed = new Discord.MessageEmbed()
-          // .setColor("#0099ff")
           .setTitle(myProcessedData[0].title)
           .setURL(myProcessedData[0].url)
-          /* .setAuthor(
-            "Some name",
-            "https://i.imgur.com/wSTFkRM.png",
-            "https://discord.js.org"
-          )*/
           .setDescription(myProcessedData[0].synopsis)
           .setThumbnail(myProcessedData[0].image_url)
           .addFields(
-            // { name: "Regular field title", value: "Some value here" },
-            // { name: "\u200B", value: "\u200B" },
             {
               name: "Episodes",
               value: myProcessedData[0].episodes,
@@ -52,22 +45,20 @@ module.exports = {
               name: "Score",
               value: myProcessedData[0].score,
               inline: true,
-            },
+            }
           )
-          /* .addField("Inline field title", "Some value here", true)
-          .setImage(")*/
           .setTimestamp()
           .setFooter(
             "Saber-chan",
-            "https://cdn.discordapp.com/avatars/629719032114970684/e619f816e4528964e907d369d28b63cc.jpg",
+            "https://cdn.discordapp.com/avatars/629719032114970684/e619f816e4528964e907d369d28b63cc.jpg"
           );
 
         message.channel.send(animeEmbed);
       })
-      .catch(err => {
+      .catch((err) => {
         console.error(err);
         message.channel.send(
-          "Sorry your request couldn't be executed \nPlease try later or contact vme",
+          "Sorry your request couldn't be executed \nPlease try later or contact vme"
         );
       });
   },
