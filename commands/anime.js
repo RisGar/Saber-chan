@@ -1,6 +1,6 @@
 const Discord = require("discord.js");
 const jikanjs = require("jikanjs");
-const logger = require("./logs/logger");
+const logger = require("../websocket/logs/logger");
 
 module.exports = {
   name: "anime",

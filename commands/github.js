@@ -1,4 +1,4 @@
-const logger = require("./logs/logger");
+const logger = require("../websocket/logs/logger");
 
 module.exports = {
   name: "github",

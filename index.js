@@ -1,5 +1,5 @@
 const Discord = require("discord.js");
-const { prefix, owner_id, token, webtoken } = require("./config.json");
+const { prefix, owner_id, token, webtoken, main_serverid, main_channelid } = require("./config.json");
 const fs = require("fs");
 const WS = require("./websocket/websocket");
 const logger = require("./websocket/logs/logger");
@@ -23,6 +23,7 @@ client.login(token);
 
 client.once("ready", () => {
   new logger(1, "Ready!");
+  client.guilds.cache.get(main_serverid).channels.cache.get(main_channelid).send("Saber-chan online!")
 });
 
 client.on("message", (message) => {
