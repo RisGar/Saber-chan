@@ -26,5 +26,6 @@
     "express-handlebars": "^4.0.3",
     "jikanjs": "^0.7.0",
     "request": "^2.88.2"
-  }
+  },
+  "devDependencies": {}
 }
