@@ -8,6 +8,13 @@ const client = new Discord.Client();
 
 const ws = new WS(webtoken, 6969, client);
 
+let now = Date.now();
+let date_zenbu = new Date(now);
+let date = date_zenbu.getDate();
+let month = date_zenbu.getMonth();
+let year = date_zenbu.getFullYear();
+let time = date_zenbu.getTime();
+
 client.commands = new Discord.Collection();
 
 const commandFiles = fs
@@ -61,14 +68,14 @@ client.on("message", (message) => {
   try {
     command.execute(message, args);
 
-    fs.writeFile("./websocket/public/logs.txt", `${message}`, (err) => {
+    fs.appendFile("./websocket/public/logs.txt", `${date}.${month}.${year} ${time}: ${message}\n`, (err) => {
       if (err) {
-        console.error(err);
+        new logger(3, err);
         return;
       }
     });
   } catch (error) {
-    console.error(error);
+    new logger(3, err);
     message.reply(
       "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
     );

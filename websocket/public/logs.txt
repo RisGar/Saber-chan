@@ -1,1 +1,4 @@
-/say hey cloudy
+1587730649: /args-info Test uwu
+1587730754: /args-info Test uwu
+24 1587730904967: /args-info Test uwu
+24.3.2020 1587730995835: /args-info Test uwu
