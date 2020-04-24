@@ -20,7 +20,7 @@ module.exports = {
       }, 5000);
 
       setTimeout(() => {
-        // bot.restart();
+        // TODO: Restarting the bot
 
       }, 6000);
 
