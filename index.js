@@ -1,19 +1,21 @@
 const Discord = require("discord.js");
-const { prefix, owner_id, token, webtoken, main_serverid, main_channelid } = require("./config.json");
+const {
+  prefix,
+  owner_id,
+  token,
+  webtoken,
+  main_serverid,
+  main_channelid,
+} = require("./config.json");
 const fs = require("fs");
 const WS = require("./websocket/websocket");
 const logger = require("./websocket/logs/logger");
+const date = require("./date");
 
 const client = new Discord.Client();
 
-const ws = new WS(webtoken, 6969, client);
-
-let now = Date.now();
-let date_zenbu = new Date(now);
-let date = date_zenbu.getDate();
-let month = date_zenbu.getMonth();
-let year = date_zenbu.getFullYear();
-let time = date_zenbu.getTime();
+// Start websocket
+new WS(webtoken, 6969, client);
 
 client.commands = new Discord.Collection();
 
@@ -30,7 +32,10 @@ client.login(token);
 
 client.once("ready", () => {
   new logger(1, "Ready!");
-  client.guilds.cache.get(main_serverid).channels.cache.get(main_channelid).send("Saber-chan online!")
+  client.guilds.cache
+    .get(main_serverid)
+    .channels.cache.get(main_channelid)
+    .send("Saber-chan online!");
 });
 
 client.on("message", (message) => {
@@ -68,14 +73,29 @@ client.on("message", (message) => {
   try {
     command.execute(message, args);
 
-    fs.appendFile("./websocket/public/logs.txt", `${date}.${month}.${year} ${time}: ${message}\n`, (err) => {
-      if (err) {
-        new logger(3, err);
-        return;
+    const now = Date.now();
+    const date_zenbu = new Date(now);
+    const date = date_zenbu.getDate();
+    const month = date_zenbu.getMonth() + 1;
+    const year = date_zenbu.getFullYear();
+    const hours = date_zenbu.getHours();
+    const minutes = date_zenbu.getMinutes();
+    const seconds = date_zenbu.getSeconds();
+
+    const full_time = `${date}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+
+    fs.appendFile(
+      "./websocket/public/logs.txt",
+      `${full_time}: ${message}\n`,
+      (err) => {
+        if (err) {
+          new logger(3, err);
+          return;
+        }
       }
-    });
-  } catch (error) {
-    new logger(3, err);
+    );
+  } catch (e) {
+    new logger(3, e);
     message.reply(
       "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
     );

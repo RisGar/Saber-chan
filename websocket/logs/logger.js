@@ -13,7 +13,18 @@ class logger {
 
     const levels = ["", "[INFO]: ", "[WARN]: ", "[ERROR]: "]
 
-    console.log(`${levels[level]}${message}`);
+    const now = Date.now();
+    const date_zenbu = new Date(now);
+    const date = date_zenbu.getDate();
+    const month = date_zenbu.getMonth() + 1;
+    const year = date_zenbu.getFullYear();
+    const hours = date_zenbu.getHours();
+    const minutes = date_zenbu.getMinutes();
+    const seconds = date_zenbu.getSeconds();
+
+    const full_time = `${date}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+
+    console.log(`${full_time} ${levels[level]}${message}`);
   }
 }
 
