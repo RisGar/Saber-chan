@@ -11,5 +11,6 @@
     ],
     "files.exclude": {
         "**/**.sample": true
-    }
+    },
+    "editor.fontFamily": "Hack Regular"
 }

@@ -1,4 +1,5 @@
 <iframe style="display: none;" name="dummyframe" id="dummyframe"></iframe>
+<iframe style="display: none;" name="dummyframe2" id="dummyframe2"></iframe>
 <div class="zenbu-form">
   <form
     id="messageForm"
@@ -31,22 +32,59 @@
       onclick="submit_form();"
     />
   </form>
+  <form id="vcForm" action="/vcMessage" method="POST" target="dummyframe2">
+    <input type="hidden" name="token" value="{{token}}" />
+    <div class="select-div">
+      <select name="vcid" class="select">
+        {{#each vcchans}}
+          <option value="{{this.id}}" class="option">
+            {{this.name}}
+          </option>
+        {{/each}}
+      </select>
+    </div>
+    <input
+      type="text"
+      name="vctext"
+      class="input"
+      id="vctext"
+      placeholder="Message"
+    />
+    <input
+      type="button"
+      class="button"
+      id="vcsubmitButton"
+      value="Send"
+      onclick="submit_form_vc();"
+    />
+  </form>
 </div>
 <script>
   function submit_form() {
-
     document.getElementById("messageForm").submit();
 
     document.getElementById("text").value = "";
-
   }
 
-  document.getElementById("text").addEventListener("keyup", function(event) {
+  function submit_form_vc() {
+    document.getElementById("vcForm").submit();
 
-  if (event.keyCode === 13) {
-    event.preventDefault();
-
-    submit_form();
+    document.getElementById("vctext").value = "";
   }
-});
+
+  document.getElementById("text").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+
+      submit_form();
+    }
+  });
+
+  document.getElementById("vctext").addEventListener("keyup", function (event) {
+    if (event.keyCode === 13) {
+      event.preventDefault();
+
+      submit_form_vc();
+    }
+  });
 </script>

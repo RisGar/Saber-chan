@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/RisGar/vmeBOT#readme",
   "dependencies": {
+    "@discordjs/opus": "^0.2.1",
     "discord.js": "^12.0.2",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.3",

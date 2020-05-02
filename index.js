@@ -38,7 +38,7 @@ client.once("ready", () => {
     .send("Saber-chan online!");
 });
 
-client.on("message", (message) => {
+client.on("message", async message => {
   // new logger(0, message.member.id);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
@@ -56,7 +56,7 @@ client.on("message", (message) => {
     );
   }
 
-  if (command.ownerOnly && message.author.id !== owner_id) {
+  if (command.ownerOnly && owner_id.indexOf(message.author.id) < 0) {
     return message.channel.send("Sorry, this command is owner only :(");
   }
 
@@ -73,20 +73,13 @@ client.on("message", (message) => {
   try {
     command.execute(message, args);
 
-    const now = Date.now();
-    const date_zenbu = new Date(now);
-    const date = date_zenbu.getDate();
-    const month = date_zenbu.getMonth() + 1;
-    const year = date_zenbu.getFullYear();
-    const hours = date_zenbu.getHours();
-    const minutes = date_zenbu.getMinutes();
-    const seconds = date_zenbu.getSeconds();
+    //console.log(full_time);
 
-    const full_time = `${date}.${month}.${year} ${hours}:${minutes}:${seconds}`;
+    x = new date();
 
     fs.appendFile(
       "./websocket/public/logs.txt",
-      `${full_time}: ${message}\n`,
+      `${x.full_time}: ${message}\n`,
       (err) => {
         if (err) {
           new logger(3, err);
@@ -94,8 +87,8 @@ client.on("message", (message) => {
         }
       }
     );
-  } catch (e) {
-    new logger(3, e);
+  } catch (err) {
+    console.log(err);
     message.reply(
       "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
     );

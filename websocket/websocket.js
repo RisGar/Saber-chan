@@ -3,6 +3,9 @@ const express = require("express");
 const hbs = require("express-handlebars");
 const bodyParser = require("body-parser");
 const logger = require("./logs/logger");
+const tts = require("../voice-rss-tts/index.js");
+const http = require("http");
+const { ttstoken } = require("../config.json");
 
 class WebSocket {
   constructor(token, port, client) {
@@ -61,10 +64,24 @@ class WebSocket {
 
       // new logger(1, chans);
 
+      let vcchans = [];
+
+      this.client.guilds.cache.forEach((c) => {
+        vcchans.push({ id: "Server", name: `**${c.name}**` });
+        c.channels.cache
+          .filter((c) => c.type == "voice")
+          .forEach((c) => {
+            vcchans.push({ id: c.id, name: c.name });
+          });
+      });
+
+      // console.log(vcchans);
+
       res.render("index", {
         title: "Saber-chan Webinterface",
         token: _token,
         chans,
+        vcchans,
       });
     });
 
@@ -115,10 +132,110 @@ class WebSocket {
 
       // new logger(1, chan);
 
-      new logger(1, `Sending message "${text}" to the channel "${chan.name}" (Websocket)`);
+      new logger(
+        1,
+        `Sending message "${text}" to the channel "${chan.name}" (Websocket)`
+      );
 
       if (chan) {
         chan.send(text);
+        res.sendStatus(200);
+      } else {
+        res.sendStatus(406);
+      }
+    });
+
+    this.app.post("/vcMessage", (req, res) => {
+      const _token = req.body.token;
+      const text = req.body.vctext;
+      const channelid = req.body.vcid;
+
+      if (!_token || !channelid || !text) {
+        new logger(3, "No token, channelid or text");
+        return res.sendStatus(400);
+      }
+
+      if (channelid == "Server") {
+        new logger(3, "Cannot send message to server");
+        return res.sendStatus(400);
+      }
+
+      if (!this.checkToken(_token)) {
+        res.render("error", {
+          title: "Saber-chan Webinterface ERROR",
+          errtype: "Invalid Token",
+        });
+        return;
+      }
+
+      // new logger(1, channelid);
+
+      let chanids = [];
+
+      this.client.guilds.cache.forEach((c) => {
+        c.channels.cache
+          .filter((c) => c.type == "voice")
+          .forEach((c) => {
+            chanids.push(c);
+          });
+      });
+
+      // new logger(1, chanids);
+
+      let chanArray = chanids.filter((o) => {
+        return o.id == channelid;
+      });
+
+      // console.log(chanArray);
+
+      let chan = chanArray[0];
+
+      // new logger(1, chan);
+
+      /*new logger(
+        1,
+        `Saying "${text}" in channel "${chan.name}" (Websocket)`
+      );*/
+
+      if (chan) {
+        let fileServer = http
+          .createServer(function (request, response) {
+            tts.speech({
+              key: ttstoken,
+              hl: "en-us",
+              src: text,
+              r: 0,
+              c: "mp3",
+              f: "44khz_16bit_stereo",
+              ssml: false,
+              b64: false,
+              callback: function (error, content) {
+                response.end(error || content);
+              },
+            });
+          })
+          .listen(8081);
+
+        const playFile = async () => {
+          const vc = await chan.join();
+
+          const dispatcher = vc.play("http://localhost:8081/");
+
+          dispatcher.on("finish", () => {
+            new logger(
+              1,
+              `Saying "${text}" in channel "${chan.name}" (Command)`
+            );
+            vc.disconnect();
+
+            http.get("http://localhost:8081/", function (response) {
+              fileServer.close();
+            });
+          });
+        };
+
+        playFile();
+
         res.sendStatus(200);
       } else {
         res.sendStatus(406);
