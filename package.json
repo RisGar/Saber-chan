@@ -22,11 +22,15 @@
   "homepage": "https://github.com/RisGar/vmeBOT#readme",
   "dependencies": {
     "@discordjs/opus": "^0.2.1",
+    "connect": "^3.7.0",
     "discord.js": "^12.0.2",
     "express": "^4.17.1",
     "express-handlebars": "^4.0.3",
     "jikanjs": "^0.7.0",
+    "node-sass": "^4.14.1",
     "request": "^2.88.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "nodemon": "^2.0.3"
+  }
 }
