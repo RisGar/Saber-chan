@@ -1,13 +1,15 @@
+const sass = require("node-sass");
+
 class renderSass {
-    function(){
-    sass.render(
+  function() {
+    this.ssass.render(
       {
         file: path.join(__dirname, "sass"),
         outFile: path.join(__dirname, "public/css"),
       },
       (error, result) => {
         if (!error) {
-          main = result;
+          const main = result;
 
           fs.writeFile(path.join(__dirname, "public/css"), main.css, (err) => {
             if (!err) {
@@ -18,6 +20,6 @@ class renderSass {
       }
     );
   }
-};
+}
 
 module.exports = renderSass;

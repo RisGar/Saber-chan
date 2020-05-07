@@ -1,22 +1,23 @@
-const Discord = require("discord.js");
+import * as Discord from "discord.js";
+import * as fs from "fs";
+import * as WS from "./websocket/websocket";
+import * as logger from "./websocket/logs/logger";
+import * as date from "./date";
+import * as renderSass from "./websocket/renderSass";
+
 const {
   prefix,
-  owner_id,
+  ownerId,
   token,
   webtoken,
-  main_serverid,
-  main_channelid,
+  mainServerid,
+  mainChannelid,
 } = require("./config.json");
-const fs = require("fs");
-const WS = require("./websocket/websocket");
-const logger = require("./websocket/logs/logger");
-const date = require("./date");
-const renderSass = require("./websocket/renderSass")
 
 const client = new Discord.Client();
 
 // Optional: Render SASS into CSS
-new renderSass();
+renderSass();
 // Start websocket
 new WS(webtoken, 6969, client);
 
@@ -41,7 +42,7 @@ client.once("ready", () => {
     .send("Saber-chan online!");
 });
 
-client.on("message", async message => {
+client.on("message", (message) => {
   // new logger(0, message.member.id);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;

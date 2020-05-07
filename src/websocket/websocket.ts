@@ -1,16 +1,26 @@
-const path = require("path");
-const express = require("express");
-const hbs = require("express-handlebars");
-const bodyParser = require("body-parser");
-const logger = require("./logs/logger");
-const tts = require("../voice-rss-tts/index.js");
-const http = require("http");
-const { ttstoken } = require("../config.json");
-const sass = require("node-sass");
-//const connect = require('connect');
-const fs = require("fs");
+import * as path from "path";
+import express from "express";
+import hbs from "express-handlebars";
+import bodyParser from "body-parser";
+import fs from "fs";
+import http from "http";
+import logger from "./logs/logger";
+import tts from "../voice-rss-tts/index.js";
+import { ttstoken } from "../config.json";
+
+export * from "websocket";
 
 class WebSocket {
+  token: any;
+
+  port: any;
+
+  client: any;
+
+  app: any;
+
+  server: any;
+
   constructor(token, port, client) {
     this.token = token;
     this.port = port;
@@ -28,8 +38,6 @@ class WebSocket {
     );
     this.app.set("views", path.join(__dirname, "views"));
     this.app.set("view engine", "hbs");
-
-    
 
     this.app.use(express.static(path.join(__dirname, "public")));
 
@@ -139,7 +147,7 @@ class WebSocket {
 
       // new logger(1, chan);
 
-      new logger(
+      logger(
         1,
         `Sending message "${text}" to the channel "${chan.name}" (Websocket)`
       );
@@ -158,12 +166,12 @@ class WebSocket {
       const channelid = req.body.vcid;
 
       if (!_token || !channelid || !text) {
-        new logger(3, "No token, channelid or text");
+        logger(3, "No token, channelid or text");
         return res.sendStatus(400);
       }
 
       if (channelid == "Server") {
-        new logger(3, "Cannot send message to server");
+        logger(3, "Cannot send message to server");
         return res.sendStatus(400);
       }
 
@@ -199,14 +207,14 @@ class WebSocket {
 
       // new logger(1, chan);
 
-      /*new logger(
+      /* new logger(
         1,
         `Saying "${text}" in channel "${chan.name}" (Websocket)`
       );*/
 
       if (chan) {
-        let fileServer = http
-          .createServer(function (request, response) {
+        const fileServer = http
+          .createServer((response) => {
             tts.speech({
               key: ttstoken,
               hl: "en-us",
@@ -250,5 +258,3 @@ class WebSocket {
     });
   }
 }
-
-module.exports = WebSocket;

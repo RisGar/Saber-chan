@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "module": "CommonJS",
+    "lib": ["esnext", "dom"],
+    "target": "esnext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "baseUrl": "src",
+    "sourceMap": false,
+    "strict": false,
+    "experimentalDecorators": true,
+    "noImplicitReturns": false,
+    "allowSyntheticDefaultImports": true,
+    "emitDecoratorMetadata": true,
+    "allowUnreachableCode": false,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false
+  },
+  "exclude": [
+    "**/node_modules"],
+  "include": ["src/**/*.ts"]
+}
