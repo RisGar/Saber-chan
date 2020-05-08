@@ -2,6 +2,8 @@ const Discord = require("discord.js");
 const jikanjs = require("jikanjs");
 const logger = require("../websocket/logs/logger");
 
+export {};
+
 module.exports = {
   name: "anime",
   description: "Search for an anime on MAL",

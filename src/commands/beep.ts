@@ -1,5 +1,7 @@
 const logger = require("../websocket/logs/logger");
 
+export {};
+
 module.exports = {
   name: "beep",
   description: "Beep!",

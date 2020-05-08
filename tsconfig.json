@@ -19,5 +19,5 @@
   },
   "exclude": [
     "**/node_modules"],
-  "include": ["src/**/*.ts"]
+  "include": ["src/**/*.ts", "src/date.js", "src/websocket/logs/logger.js", "src/websocket/websocket.js"]
 }

@@ -1,31 +1,40 @@
-import * as Discord from "discord.js";
-import * as fs from "fs";
-import * as WS from "./websocket/websocket";
-import * as logger from "./websocket/logs/logger";
-import * as date from "./date";
-import * as renderSass from "./websocket/renderSass";
+/* eslint-disable import/no-dynamic-require */
+/* eslint-disable global-require */
+/* eslint-disable @typescript-eslint/no-var-requires */
+/* eslint-disable no-useless-return */
+/* eslint-disable consistent-return */
+/* eslint-disable no-restricted-syntax */
+import Discord from "discord.js";
+import fs from "fs";
+import path from "path";
+import WebSocket from "./websocket/websocket";
+import logger from "./websocket/logs/logger";
+import date from "./date";
+// Import * as renderSass from "./websocket/renderSass";
 
-const {
+import {
   prefix,
   ownerId,
   token,
   webtoken,
-  mainServerid,
-  mainChannelid,
-} = require("./config.json");
+  mainServerId,
+  mainChannelId,
+} from "./config.json";
 
-const client = new Discord.Client();
+export {};
+
+const client: any = new Discord.Client();
 
 // Optional: Render SASS into CSS
-renderSass();
+
 // Start websocket
-new WS(webtoken, 6969, client);
+const webSocket = new WebSocket(webtoken, 6969, client);
 
 client.commands = new Discord.Collection();
 
-const commandFiles = fs
-  .readdirSync("./commands")
-  .filter((file) => file.endsWith(".js"));
+const commandFiles = fs.readdirSync(path.join(__dirname, "commands")).filter((file) => {
+  return file.endsWith(".js");
+});
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -35,16 +44,15 @@ for (const file of commandFiles) {
 client.login(token);
 
 client.once("ready", () => {
-  new logger(1, "Ready!");
+  const readyLogger = new logger(1, "Ready!");
   client.guilds.cache
-    .get(main_serverid)
-    .channels.cache.get(main_channelid)
+    .get(mainServerId)
+    .channels.cache.get(mainChannelId)
     .send("Saber-chan online!");
 });
 
-client.on("message", (message) => {
-  // new logger(0, message.member.id);
-
+// eslint-disable-next-line prefer-arrow-callback
+client.on("message", function (message) {
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(" ");
@@ -60,7 +68,7 @@ client.on("message", (message) => {
     );
   }
 
-  if (command.ownerOnly && owner_id.indexOf(message.author.id) < 0) {
+  if (command.ownerOnly && !ownerId.includes(message.author.id)) {
     return message.channel.send("Sorry, this command is owner only :(");
   }
 
@@ -77,16 +85,14 @@ client.on("message", (message) => {
   try {
     command.execute(message, args);
 
-    //console.log(full_time);
-
-    x = new date();
+    const x = new date();
 
     fs.appendFile(
       "./websocket/public/logs.txt",
-      `${x.full_time}: ${message}\n`,
+      `${x.fullTime}: ${message}\n`,
       (err) => {
         if (err) {
-          new logger(3, err);
+          const messageLogger = new logger(3, err);
           return;
         }
       }
@@ -97,4 +103,5 @@ client.on("message", (message) => {
       "Sorry, there was an error trying to execute that command\nPlease try again later or contact vme"
     );
   }
+  return true;
 });

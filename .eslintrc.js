@@ -18,21 +18,22 @@ module.exports = {
     node: true,
   },
   extends: [
-    "eslint:recommended",
+    "airbnb-typescript/base",
+    //"airbnb/hooks",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
-    "airbnb-typescript",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
     "prettier/@typescript-eslint",
   ],
   ignorePatterns: ["node_modules", "dist", "coverage"],
   parser: "@typescript-eslint/parser",
   parserOptions: {
-    project: "tsconfig.json",
+    project: "./tsconfig.json",
     sourceType: "module",
   },
-  plugins: ["@typescript-eslint", "@typescript-eslint/tslint"],
+  plugins: ["@typescript-eslint"],
   rules: {
-    "no-underscore-dangle": "off",
+    "new-cap": "off",
     "@typescript-eslint/indent": ["error"],
     "linebreak-style": ["error", "windows"],
     "@typescript-eslint/class-name-casing": "error",
@@ -124,15 +125,6 @@ module.exports = {
       "always",
       {
         markers: ["/"],
-      },
-    ],
-    "@typescript-eslint/tslint/config": [
-      "error",
-      {
-        rules: {
-          "prefer-switch": true,
-          whitespace: true,
-        },
       },
     ],
   },

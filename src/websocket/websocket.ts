@@ -1,19 +1,25 @@
-import * as path from "path";
+/* eslint-disable import/prefer-default-export */
+/* eslint-disable consistent-return */
+/* eslint-disable no-shadow */
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable @typescript-eslint/explicit-function-return-type */
+/* eslint-disable @typescript-eslint/no-explicit-any */
+
+import path from "path";
 import express from "express";
 import hbs from "express-handlebars";
 import bodyParser from "body-parser";
-import fs from "fs";
 import http from "http";
+import sass from "node-sass";
+import fs from "fs";
 import logger from "./logs/logger";
-import tts from "../voice-rss-tts/index.js";
+import tts from "../voice-rss-tts/index";
 import { ttstoken } from "../config.json";
 
-export * from "websocket";
+export default class WebSocket {
+  token: string;
 
-class WebSocket {
-  token: any;
-
-  port: any;
+  port: number;
 
   client: any;
 
@@ -28,12 +34,30 @@ class WebSocket {
 
     this.app = express();
 
+    sass.render(
+      {
+        file: path.join(__dirname, "sass"),
+        outFile: path.join(__dirname, "public/css"),
+      },
+      (error, result) => {
+        if (!error) {
+          const main = result;
+
+          fs.writeFile(path.join(__dirname, "public/css"), main.css, (err) => {
+            if (!err) {
+              const cssWritten = new logger(1, "main.css has been written");
+            }
+          });
+        }
+      }
+    );
+
     this.app.engine(
       "hbs",
       hbs({
         extname: "hbs",
         defaultLayout: "layout",
-        layoutsDir: __dirname + "/layouts",
+        layoutsDir: path.join(__dirname, "layouts"),
       })
     );
     this.app.set("views", path.join(__dirname, "views"));
@@ -47,12 +71,12 @@ class WebSocket {
     this.registerRoots();
 
     this.server = this.app.listen(port, () => {
-      new logger(1, `Port: ${this.server.address().port}`);
+      const portLogger = new logger(1, `Port: ${this.server.address().port}`);
     });
   }
 
   checkToken(_token) {
-    return _token == this.token;
+    return _token === this.token;
   }
 
   registerRoots() {
@@ -66,31 +90,31 @@ class WebSocket {
         return;
       }
 
-      let chans = [];
+      const chans = [];
 
       this.client.guilds.cache.forEach((c) => {
         chans.push({ id: "Server", name: `**${c.name}**` });
         c.channels.cache
-          .filter((c) => c.type == "text")
+          .filter((c) => {
+            return c.type === "text";
+          })
           .forEach((c) => {
             chans.push({ id: c.id, name: c.name });
           });
       });
 
-      // new logger(1, chans);
-
-      let vcchans = [];
+      const vcchans = [];
 
       this.client.guilds.cache.forEach((c) => {
         vcchans.push({ id: "Server", name: `**${c.name}**` });
         c.channels.cache
-          .filter((c) => c.type == "voice")
+          .filter((c) => {
+            return c.type === "voice";
+          })
           .forEach((c) => {
             vcchans.push({ id: c.id, name: c.name });
           });
       });
-
-      // console.log(vcchans);
 
       res.render("index", {
         title: "Saber-chan Webinterface",
@@ -102,16 +126,16 @@ class WebSocket {
 
     this.app.post("/sendMessage", (req, res) => {
       const _token = req.body.token;
-      const text = req.body.text;
-      const channelid = req.body.channelid;
+      const { text } = req.body;
+      const { channelid } = req.body;
 
       if (!_token || !channelid || !text) {
-        new logger(3, "No token, channelid or text");
+        const notThereWSLogger = new logger(3, "No token, channelid or text");
         return res.sendStatus(400);
       }
 
-      if (channelid == "Server") {
-        new logger(3, "Cannot send message to server");
+      if (channelid === "Server") {
+        const cannotSendLogger = new logger(3, "Cannot send message to server");
         return res.sendStatus(400);
       }
 
@@ -123,31 +147,25 @@ class WebSocket {
         return;
       }
 
-      // new logger(1, channelid);
-
-      let chanids = [];
+      const chanids = [];
 
       this.client.guilds.cache.forEach((c) => {
         c.channels.cache
-          .filter((c) => c.type == "text")
+          .filter((c) => {
+            return c.type === "text";
+          })
           .forEach((c) => {
             chanids.push(c);
           });
       });
 
-      // new logger(1, chanids);
-
-      let chanArray = chanids.filter((o) => {
-        return o.id == channelid;
+      const chanArray = chanids.filter((o) => {
+        return o.id === channelid;
       });
 
-      // new logger(1, chanArray);
+      const chan = chanArray[0];
 
-      let chan = chanArray[0];
-
-      // new logger(1, chan);
-
-      logger(
+      const sendingWSMsgLogger = new logger(
         1,
         `Sending message "${text}" to the channel "${chan.name}" (Websocket)`
       );
@@ -166,12 +184,15 @@ class WebSocket {
       const channelid = req.body.vcid;
 
       if (!_token || !channelid || !text) {
-        logger(3, "No token, channelid or text");
+        const WSNoErrorLogger = new logger(3, "No token, channelid or text");
         return res.sendStatus(400);
       }
 
-      if (channelid == "Server") {
-        logger(3, "Cannot send message to server");
+      if (channelid === "Server") {
+        const cannotSendMsgLogger = new logger(
+          3,
+          "Cannot send message to server"
+        );
         return res.sendStatus(400);
       }
 
@@ -180,41 +201,29 @@ class WebSocket {
           title: "Saber-chan Webinterface ERROR",
           errtype: "Invalid Token",
         });
-        return;
+        return res.sendStatus(400);
       }
 
-      // new logger(1, channelid);
+      const chanids = [];
 
-      let chanids = [];
-
-      this.client.guilds.cache.forEach((c) => {
+      this.client.guilds.cache.forEach((c: any) => {
         c.channels.cache
-          .filter((c) => c.type == "voice")
+          .filter((c) => {
+            return c.type === "voice";
+          })
           .forEach((c) => {
             chanids.push(c);
           });
       });
 
-      // new logger(1, chanids);
-
-      let chanArray = chanids.filter((o) => {
-        return o.id == channelid;
+      const chanArray = chanids.filter((o) => {
+        return o.id === channelid;
       });
 
-      // console.log(chanArray);
-
-      let chan = chanArray[0];
-
-      // new logger(1, chan);
-
-      /* new logger(
-        1,
-        `Saying "${text}" in channel "${chan.name}" (Websocket)`
-      );*/
-
+      const chan = chanArray[0];
       if (chan) {
         const fileServer = http
-          .createServer((response) => {
+          .createServer((response: any) => {
             tts.speech({
               key: ttstoken,
               hl: "en-us",
@@ -224,6 +233,7 @@ class WebSocket {
               f: "44khz_16bit_stereo",
               ssml: false,
               b64: false,
+              // eslint-disable-next-line object-shorthand
               callback: function (error, content) {
                 response.end(error || content);
               },
@@ -237,13 +247,10 @@ class WebSocket {
           const dispatcher = vc.play("http://localhost:8081/");
 
           dispatcher.on("finish", () => {
-            new logger(
-              1,
-              `Saying "${text}" in channel "${chan.name}" (Command)`
-            );
+            const sayingMsginVCWsLogger = new logger(1, `Saying "${text}" in channel "${chan.name}" (Websocket)`);
             vc.disconnect();
 
-            http.get("http://localhost:8081/", function (response) {
+            http.get("http://localhost:8081/", () => {
               fileServer.close();
             });
           });
@@ -258,3 +265,5 @@ class WebSocket {
     });
   }
 }
+
+// Module.exports = WebSocket;

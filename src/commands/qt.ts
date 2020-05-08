@@ -1,5 +1,7 @@
 const logger = require("../websocket/logs/logger");
 
+export {};
+
 module.exports = {
   name: "qt",
   description: "Call Saber-chan a qt",

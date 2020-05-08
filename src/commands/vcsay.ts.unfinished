@@ -5,6 +5,8 @@ const tts = require("../voice-rss-tts/index.js");
 const http = require("http");
 const fs = require("fs");
 
+export {};
+
 module.exports = {
   name: "vcsay",
   description:

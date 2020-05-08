@@ -1,9 +1,11 @@
 const logger = require("../websocket/logs/logger");
 const request = require("request");
 const { ttstoken } = require("../config.json");
-var tts = require("../voice-rss-tts/index.js");
-var http = require("http");
+const tts = require("../voice-rss-tts/index.js");
+const http = require("http");
 const fs = require("fs");
+
+export {};
 
 module.exports = {
   name: "say",
