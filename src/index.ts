@@ -25,9 +25,9 @@ export {};
 
 const client: any = new Discord.Client();
 
-// Optional: Render SASS into CSS
+// Optional: Render SASS file into CSS
 
-// Start websocket
+// Start Websocket
 const webSocket = new WebSocket(webtoken, 6969, client);
 
 client.commands = new Discord.Collection();

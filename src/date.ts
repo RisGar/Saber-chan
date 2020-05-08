@@ -1,6 +1,9 @@
+/* eslint-disable @typescript-eslint/class-name-casing */
 /* eslint-disable @typescript-eslint/explicit-function-return-type */
 // TODO date function
 export default class date {
+  fullTime: any;
+
   date() {
     const now = Date.now();
     const dateZenbu = new Date(now);

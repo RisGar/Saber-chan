@@ -2,6 +2,4 @@
 */config.json
 websocket/public/logs.txt
 *~
-dist/*
 node_modules
-node_modules/*

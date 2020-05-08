@@ -13,7 +13,7 @@ import http from "http";
 import sass from "node-sass";
 import fs from "fs";
 import logger from "./logs/logger";
-import tts from "../voice-rss-tts/index";
+import speech from "../voice-rss-tts/index";
 import { ttstoken } from "../config.json";
 
 export default class WebSocket {
@@ -224,7 +224,7 @@ export default class WebSocket {
       if (chan) {
         const fileServer = http
           .createServer((response: any) => {
-            tts.speech({
+            speech({
               key: ttstoken,
               hl: "en-us",
               src: text,
