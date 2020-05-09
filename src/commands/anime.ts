@@ -1,6 +1,6 @@
-const Discord = require("discord.js");
-const jikanjs = require("jikanjs");
-const logger = require("../websocket/logs/logger");
+import Discord from "discord.js";
+import jikanjs from "jikanjs";
+import logger from "../websocket/logs/logger";
 
 export {};
 
@@ -13,8 +13,8 @@ module.exports = {
     jikanjs
       .search("anime", args.join(" "), 1, { limit: 1 })
       .then((response) => {
-        // new logger(1, response);
-        const myProcessedData = response.results.map(function (result) {
+        // New logger(1, response);
+        const myProcessedData = response.results.map((result) => {
           return {
             mal_id: result.mal_id,
             title: result.title,

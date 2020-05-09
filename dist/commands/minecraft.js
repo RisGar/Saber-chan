@@ -1,7 +1,10 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger = require("../websocket/logs/logger");
-const request = require("request");
+const request_1 = __importDefault(require("request"));
+const logger_1 = __importDefault(require("../websocket/logs/logger"));
 module.exports = {
     name: "minecraft",
     description: "Minecraft Server Online Status",
@@ -10,9 +13,9 @@ module.exports = {
     execute(message, args) {
         function loadServerData() {
             const url = `http://mcapi.us/server/status?ip=${mcIP}&port=${mcPort}`;
-            request(url, (err, response, body) => {
+            request_1.default(url, (err, response, body) => {
                 if (err) {
-                    const mcErrorLogger = new logger(3, err);
+                    const mcErrorLogger = new logger_1.default(3, err);
                     return message.reply("Error getting Minecraft server status... \nPlease specify a valid server name or ip");
                 }
                 const data = JSON.parse(body);

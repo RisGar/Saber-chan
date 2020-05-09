@@ -1,5 +1,5 @@
-const logger = require("../websocket/logs/logger");
-const request = require("request");
+import request from "request";
+import logger from "../websocket/logs/logger";
 
 export {};
 

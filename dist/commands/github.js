@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger = require("../websocket/logs/logger");
 module.exports = {
     name: "github",
     description: "Show link of Github repository",

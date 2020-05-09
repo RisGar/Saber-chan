@@ -1,4 +1,4 @@
-const logger = require("../websocket/logs/logger");
+import logger from "../websocket/logs/logger";
 
 export {};
 

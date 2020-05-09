@@ -62,9 +62,9 @@ client.on("message", function (message) {
     try {
         command.execute(message, args);
         const x = new date_1.default();
-        fs_1.default.appendFile("./websocket/public/logs.txt", `${x.fullTime}: ${message}\n`, (err) => {
+        fs_1.default.appendFile(path_1.default.join(path_1.default.dirname(path_1.default.dirname(__dirname)), "src", "websocket", "public", "logs.txt"), `${x.fullTime}: ${message}\n`, (err) => {
             if (err) {
-                const messageLogger = new logger_1.default(3, err);
+                console.log(err);
                 return;
             }
         });

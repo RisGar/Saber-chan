@@ -1,19 +1,21 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const Discord = require("discord.js");
-const jikanjs = require("jikanjs");
-const logger = require("../websocket/logs/logger");
+const discord_js_1 = __importDefault(require("discord.js"));
+const jikanjs_1 = __importDefault(require("jikanjs"));
 module.exports = {
     name: "anime",
     description: "Search for an anime on MAL",
     args: true,
     usage: "<anime name>",
     execute(message, args) {
-        jikanjs
+        jikanjs_1.default
             .search("anime", args.join(" "), 1, { limit: 1 })
             .then((response) => {
-            // new logger(1, response);
-            const myProcessedData = response.results.map(function (result) {
+            // New logger(1, response);
+            const myProcessedData = response.results.map((result) => {
                 return {
                     mal_id: result.mal_id,
                     title: result.title,
@@ -25,7 +27,7 @@ module.exports = {
                     score: result.score,
                 };
             });
-            const animeEmbed = new Discord.MessageEmbed()
+            const animeEmbed = new discord_js_1.default.MessageEmbed()
                 .setTitle(myProcessedData[0].title)
                 .setURL(myProcessedData[0].url)
                 .setDescription(myProcessedData[0].synopsis)

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger = require("../websocket/logs/logger");
 module.exports = {
     name: "restart",
     description: "Restarting the bot",

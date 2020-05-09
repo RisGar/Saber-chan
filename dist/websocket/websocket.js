@@ -14,38 +14,24 @@ const express_1 = __importDefault(require("express"));
 const express_handlebars_1 = __importDefault(require("express-handlebars"));
 const body_parser_1 = __importDefault(require("body-parser"));
 const http_1 = __importDefault(require("http"));
-const node_sass_1 = __importDefault(require("node-sass"));
-const fs_1 = __importDefault(require("fs"));
 const logger_1 = __importDefault(require("./logs/logger"));
-const index_1 = __importDefault(require("../voice-rss-tts/index"));
-const config_json_1 = require("../config.json");
+const tts_1 = __importDefault(require("../tts"));
+const renderSass_1 = __importDefault(require("./renderSass"));
 class WebSocket {
     constructor(token, port, client) {
         this.token = token;
         this.port = port;
         this.client = client;
         this.app = express_1.default();
-        node_sass_1.default.render({
-            file: path_1.default.join(__dirname, "sass"),
-            outFile: path_1.default.join(__dirname, "public/css"),
-        }, (error, result) => {
-            if (!error) {
-                const main = result;
-                fs_1.default.writeFile(path_1.default.join(__dirname, "public/css"), main.css, (err) => {
-                    if (!err) {
-                        const cssWritten = new logger_1.default(1, "main.css has been written");
-                    }
-                });
-            }
-        });
+        const renderSassWS = new renderSass_1.default();
         this.app.engine("hbs", express_handlebars_1.default({
             extname: "hbs",
             defaultLayout: "layout",
-            layoutsDir: path_1.default.join(__dirname, "layouts"),
+            layoutsDir: path_1.default.join(path_1.default.dirname(path_1.default.dirname(__dirname)), "src", "websocket", "layouts"),
         }));
-        this.app.set("views", path_1.default.join(__dirname, "views"));
+        this.app.set("views", path_1.default.join(path_1.default.dirname(path_1.default.dirname(__dirname)), "src", "websocket", "views"));
         this.app.set("view engine", "hbs");
-        this.app.use(express_1.default.static(path_1.default.join(__dirname, "public")));
+        this.app.use(express_1.default.static(path_1.default.join(path_1.default.dirname(path_1.default.dirname(__dirname)), "src", "websocket", "public")));
         this.app.use(body_parser_1.default.urlencoded({ extended: false }));
         this.app.use(body_parser_1.default.json());
         this.registerRoots();
@@ -170,30 +156,14 @@ class WebSocket {
             });
             const chan = chanArray[0];
             if (chan) {
-                const fileServer = http_1.default
-                    .createServer((response) => {
-                    index_1.default({
-                        key: config_json_1.ttstoken,
-                        hl: "en-us",
-                        src: text,
-                        r: 0,
-                        c: "mp3",
-                        f: "44khz_16bit_stereo",
-                        ssml: false,
-                        b64: false,
-                        // eslint-disable-next-line object-shorthand
-                        callback: function (error, content) {
-                            response.end(error || content);
-                        },
-                    });
-                })
-                    .listen(8081);
+                const WSTtsRequest = new tts_1.default(text);
                 const playFile = async () => {
                     const vc = await chan.join();
                     const dispatcher = vc.play("http://localhost:8081/");
                     dispatcher.on("finish", () => {
                         const sayingMsginVCWsLogger = new logger_1.default(1, `Saying "${text}" in channel "${chan.name}" (Websocket)`);
                         vc.disconnect();
+                        const { fileServer } = WSTtsRequest;
                         http_1.default.get("http://localhost:8081/", () => {
                             fileServer.close();
                         });

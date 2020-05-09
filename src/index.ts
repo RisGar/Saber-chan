@@ -88,11 +88,11 @@ client.on("message", function (message) {
     const x = new date();
 
     fs.appendFile(
-      "./websocket/public/logs.txt",
+      path.join(path.dirname(path.dirname(__dirname)),"src" , "websocket", "public", "logs.txt"),
       `${x.fullTime}: ${message}\n`,
       (err) => {
         if (err) {
-          const messageLogger = new logger(3, err);
+          console.log(err);
           return;
         }
       }

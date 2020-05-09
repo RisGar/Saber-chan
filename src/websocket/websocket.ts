@@ -9,12 +9,12 @@ import path from "path";
 import express from "express";
 import hbs from "express-handlebars";
 import bodyParser from "body-parser";
-import http from "http";
 import sass from "node-sass";
 import fs from "fs";
+import http from "http";
 import logger from "./logs/logger";
-import speech from "../voice-rss-tts/index";
-import { ttstoken } from "../config.json";
+import tts from "../tts";
+import renderSass from "./renderSass";
 
 export default class WebSocket {
   token: string;
@@ -34,36 +34,42 @@ export default class WebSocket {
 
     this.app = express();
 
-    sass.render(
-      {
-        file: path.join(__dirname, "sass"),
-        outFile: path.join(__dirname, "public/css"),
-      },
-      (error, result) => {
-        if (!error) {
-          const main = result;
-
-          fs.writeFile(path.join(__dirname, "public/css"), main.css, (err) => {
-            if (!err) {
-              const cssWritten = new logger(1, "main.css has been written");
-            }
-          });
-        }
-      }
-    );
+    const renderSassWS = new renderSass();
 
     this.app.engine(
       "hbs",
       hbs({
         extname: "hbs",
         defaultLayout: "layout",
-        layoutsDir: path.join(__dirname, "layouts"),
+        layoutsDir: path.join(
+          path.dirname(path.dirname(__dirname)),
+          "src",
+          "websocket",
+          "layouts"
+        ),
       })
     );
-    this.app.set("views", path.join(__dirname, "views"));
+    this.app.set(
+      "views",
+      path.join(
+        path.dirname(path.dirname(__dirname)),
+        "src",
+        "websocket",
+        "views"
+      )
+    );
     this.app.set("view engine", "hbs");
 
-    this.app.use(express.static(path.join(__dirname, "public")));
+    this.app.use(
+      express.static(
+        path.join(
+          path.dirname(path.dirname(__dirname)),
+          "src",
+          "websocket",
+          "public"
+        )
+      )
+    );
 
     this.app.use(bodyParser.urlencoded({ extended: false }));
     this.app.use(bodyParser.json());
@@ -222,24 +228,7 @@ export default class WebSocket {
 
       const chan = chanArray[0];
       if (chan) {
-        const fileServer = http
-          .createServer((response: any) => {
-            speech({
-              key: ttstoken,
-              hl: "en-us",
-              src: text,
-              r: 0,
-              c: "mp3",
-              f: "44khz_16bit_stereo",
-              ssml: false,
-              b64: false,
-              // eslint-disable-next-line object-shorthand
-              callback: function (error, content) {
-                response.end(error || content);
-              },
-            });
-          })
-          .listen(8081);
+        const WSTtsRequest = new tts(text);
 
         const playFile = async () => {
           const vc = await chan.join();
@@ -247,8 +236,13 @@ export default class WebSocket {
           const dispatcher = vc.play("http://localhost:8081/");
 
           dispatcher.on("finish", () => {
-            const sayingMsginVCWsLogger = new logger(1, `Saying "${text}" in channel "${chan.name}" (Websocket)`);
+            const sayingMsginVCWsLogger = new logger(
+              1,
+              `Saying "${text}" in channel "${chan.name}" (Websocket)`
+            );
             vc.disconnect();
+
+            const { fileServer } = WSTtsRequest;
 
             http.get("http://localhost:8081/", () => {
               fileServer.close();

@@ -1,6 +1,9 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-const logger = require("../websocket/logs/logger");
+const logger_1 = __importDefault(require("../websocket/logs/logger"));
 module.exports = {
     name: "reload",
     description: "Reloads a command",
@@ -21,7 +24,7 @@ module.exports = {
             message.client.commands.set(newCommand.name, newCommand);
         }
         catch (error) {
-            new logger(3, error);
+            new logger_1.default(3, error);
             message.channel.send(`There was an error while reloading a command \`${command.name}\`:\n\`${error.message}\``);
         }
         message.channel.send(`\`${command.name}\` was reloaded!`);
