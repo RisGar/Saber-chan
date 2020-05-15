@@ -2,6 +2,6 @@
 A discord bot
 
 ## H2 How to install
-Download repo and replace values in config.json.sample.
-Rename config.json.sample to config.json.
-Start with start.bat
+Download repo and replace values in dist/config.json.sample.  
+Rename that file to config.json.  
+Start with start.bat in main folder.
