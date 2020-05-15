@@ -1,1 +1,1 @@
-node src/index.js
+node dist/index.js
