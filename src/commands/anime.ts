@@ -1,8 +1,8 @@
-import Discord from "discord.js";
-import jikanjs from "jikanjs";
-import logger from "../websocket/logs/logger";
+import Discord from "discord.js"
+import jikanjs from "jikanjs"
+import logger from "../websocket/logs/logger"
 
-export {};
+export {}
 
 module.exports = {
   name: "anime",
@@ -24,8 +24,8 @@ module.exports = {
             image_url: result.image_url,
             type: result.type,
             score: result.score,
-          };
-        });
+          }
+        })
 
         const animeEmbed = new Discord.MessageEmbed()
           .setTitle(myProcessedData[0].title)
@@ -53,15 +53,15 @@ module.exports = {
           .setFooter(
             "Saber-chan",
             "https://cdn.discordapp.com/avatars/629719032114970684/e619f816e4528964e907d369d28b63cc.jpg"
-          );
+          )
 
-        message.channel.send(animeEmbed);
+        message.channel.send(animeEmbed)
       })
       .catch((err) => {
-        console.error(err);
+        console.error(err)
         message.channel.send(
           "Sorry your request couldn't be executed \nPlease try later or contact vme"
-        );
-      });
+        )
+      })
   },
-};
+}

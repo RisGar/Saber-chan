@@ -32,10 +32,10 @@ for (const file of commandFiles) {
 client.login(config_json_1.token);
 client.once("ready", () => {
     const readyLogger = new logger_1.default(1, "Ready!");
-    client.guilds.cache
-        .get(config_json_1.mainServerId)
-        .channels.cache.get(config_json_1.mainChannelId)
-        .send("Saber-chan online!");
+    /* Client.guilds.cache
+      .get(mainServerId)
+      .channels.cache.get(mainChannelId)
+      .send("Saber-chan online!");*/
 });
 // eslint-disable-next-line prefer-arrow-callback
 client.on("message", function (message) {
@@ -62,7 +62,7 @@ client.on("message", function (message) {
     try {
         command.execute(message, args);
         const x = new date_1.default();
-        fs_1.default.appendFile(path_1.default.join(path_1.default.dirname(path_1.default.dirname(__dirname)), "src", "websocket", "public", "logs.txt"), `${x.fullTime}: ${message}\n`, (err) => {
+        fs_1.default.appendFile(path_1.default.join(path_1.default.dirname(__dirname), "src", "websocket", "public", "logs.txt"), `${x.fullTime}: ${message}\n`, (err) => {
             if (err) {
                 console.log(err);
                 return;

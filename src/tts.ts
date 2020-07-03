@@ -1,17 +1,17 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
-import http from "http";
-import speech from "./voice-rss-tts/index";
-import { ttstoken } from "./config.json";
+import http from "http"
+import speech from "./voice-rss-tts/index"
+import { ttstoken } from "./config.json"
 
 export default class tts {
-  text: string;
+  text: string
 
-  server: http.Server;
+  server: http.Server
 
-  fileServer: http.Server;
+  fileServer: http.Server
 
   constructor(text: string) {
-    this.text = text;
+    this.text = text
 
     const fileServer = http
       .createServer((request, response) => {
@@ -26,12 +26,12 @@ export default class tts {
           b64: false,
           // eslint-disable-next-line object-shorthand
           callback: function (error, content) {
-            response.end(error || content);
+            response.end(error || content)
           },
-        });
+        })
       })
-      .listen(8081);
+      .listen(8081)
 
-    this.fileServer = fileServer;
+    this.fileServer = fileServer
   }
 }

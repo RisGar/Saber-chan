@@ -23,8 +23,6 @@ module.exports = {
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "plugin:@typescript-eslint/recommended-requiring-type-checking",
-    "prettier/@typescript-eslint",
-    "plugin:prettier/recommended"
   ],
   ignorePatterns: ["node_modules", "dist", "coverage"],
   parser: "@typescript-eslint/parser",
@@ -74,7 +72,8 @@ module.exports = {
         avoidEscape: true,
       },
     ],
-    "@typescript-eslint/semi": ["error"],
+    "semi": "off",
+    "@typescript-eslint/semi": ["off"],
     "arrow-body-style": ["error", "always"],
     camelcase: "error",
     "capitalized-comments": ["error", "always"],

@@ -45,10 +45,10 @@ client.login(token);
 
 client.once("ready", () => {
   const readyLogger = new logger(1, "Ready!");
-  client.guilds.cache
+  /* Client.guilds.cache
     .get(mainServerId)
     .channels.cache.get(mainChannelId)
-    .send("Saber-chan online!");
+    .send("Saber-chan online!");*/
 });
 
 // eslint-disable-next-line prefer-arrow-callback
@@ -88,7 +88,7 @@ client.on("message", function (message) {
     const x = new date();
 
     fs.appendFile(
-      path.join(path.dirname(path.dirname(__dirname)),"src" , "websocket", "public", "logs.txt"),
+      path.join(path.dirname(__dirname),"src" , "websocket", "public", "logs.txt"),
       `${x.fullTime}: ${message}\n`,
       (err) => {
         if (err) {
