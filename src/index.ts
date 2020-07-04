@@ -10,6 +10,7 @@ import path from "path";
 import WebSocket from "./websocket/websocket";
 import logger from "./websocket/logs/logger";
 import date from "./date";
+import addExp from "./exp/addExp"
 // Import * as renderSass from "./websocket/renderSass";
 
 import {
@@ -53,6 +54,9 @@ client.once("ready", () => {
 
 // eslint-disable-next-line prefer-arrow-callback
 client.on("message", function (message) {
+
+  addExp(message, message.author)
+
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 
   const args = message.content.slice(prefix.length).split(" ");
@@ -88,7 +92,7 @@ client.on("message", function (message) {
     const x = new date();
 
     fs.appendFile(
-      path.join(path.dirname(__dirname),"src" , "websocket", "public", "logs.txt"),
+      path.join(path.dirname(__dirname),"src", "websocket", "public", "logs.txt"),
       `${x.fullTime}: ${message}\n`,
       (err) => {
         if (err) {

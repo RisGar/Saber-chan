@@ -15,6 +15,7 @@ const path_1 = __importDefault(require("path"));
 const websocket_1 = __importDefault(require("./websocket/websocket"));
 const logger_1 = __importDefault(require("./websocket/logs/logger"));
 const date_1 = __importDefault(require("./date"));
+const addExp_1 = __importDefault(require("./exp/addExp"));
 // Import * as renderSass from "./websocket/renderSass";
 const config_json_1 = require("./config.json");
 const client = new discord_js_1.default.Client();
@@ -39,6 +40,7 @@ client.once("ready", () => {
 });
 // eslint-disable-next-line prefer-arrow-callback
 client.on("message", function (message) {
+    addExp_1.default(message, message.author);
     if (!message.content.startsWith(config_json_1.prefix) || message.author.bot)
         return;
     const args = message.content.slice(config_json_1.prefix.length).split(" ");
