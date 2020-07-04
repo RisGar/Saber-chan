@@ -1,10 +1,12 @@
 {
-    "prefix": "",
-    "ownerId": "",
+    "prefix": "/",
+    "ownerId": "000000000000000000",
     "token": "",
-    "webtoken": "",
-    "mainServerId": "",
-    "mainChannelId": "",
+    "webtoken": "Password",
+    "mainServerId": "000000000000000000",
+    "mainChannelId": "000000000000000000",
     "ttstoken": "",
-    "rapidapitoken": ""
+    "rapidapitoken": "",
+    "webport": 1234
 }
+

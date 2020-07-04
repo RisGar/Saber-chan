@@ -20,6 +20,7 @@ import {
   webtoken,
   mainServerId,
   mainChannelId,
+  webport
 } from "./config.json";
 
 export {};
@@ -29,7 +30,7 @@ const client: any = new Discord.Client();
 // Optional: Render SASS file into CSS
 
 // Start Websocket
-const webSocket = new WebSocket(webtoken, 6969, client);
+const webSocket = new WebSocket(webtoken, webport, client);
 
 client.commands = new Discord.Collection();
 

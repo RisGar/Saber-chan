@@ -21,7 +21,7 @@ const config_json_1 = require("./config.json");
 const client = new discord_js_1.default.Client();
 // Optional: Render SASS file into CSS
 // Start Websocket
-const webSocket = new websocket_1.default(config_json_1.webtoken, 6969, client);
+const webSocket = new websocket_1.default(config_json_1.webtoken, config_json_1.webport, client);
 client.commands = new discord_js_1.default.Collection();
 const commandFiles = fs_1.default.readdirSync(path_1.default.join(__dirname, "commands")).filter((file) => {
     return file.endsWith(".js");
