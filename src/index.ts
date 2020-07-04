@@ -7,20 +7,20 @@
 import Discord from "discord.js";
 import fs from "fs";
 import path from "path";
-import WebSocket from "./websocket/websocket";
-import logger from "./websocket/logs/logger";
 import date from "./date";
-import addExp from "./exp/addExp"
+import addExp from "./exp/addExp";
+import logger from "./websocket/logs/logger";
+import WebSocket from "./websocket/websocket";
 // Import * as renderSass from "./websocket/renderSass";
 
 import {
-  prefix,
-  ownerId,
-  token,
-  webtoken,
-  mainServerId,
   mainChannelId,
-  webport
+  mainServerId,
+  ownerId,
+  prefix,
+  token,
+  webport,
+  webtoken
 } from "./config.json";
 
 export {};
@@ -34,9 +34,8 @@ const webSocket = new WebSocket(webtoken, webport, client);
 
 client.commands = new Discord.Collection();
 
-const commandFiles = fs.readdirSync(path.join(__dirname, "commands")).filter((file) => {
-  return file.endsWith(".js");
-});
+const commandFiles = fs.readdirSync(path.join(__dirname, "commands")).filter((file) =>
+  file.endsWith(".js"));
 
 for (const file of commandFiles) {
   const command = require(`./commands/${file}`);
@@ -53,10 +52,10 @@ client.once("ready", () => {
     .send("Saber-chan online!");*/
 });
 
-// eslint-disable-next-line prefer-arrow-callback
+// Eslint-disable-next-line prefer-arrow-callback
 client.on("message", function (message) {
 
-  addExp(message, message.author)
+  addExp(message, message.author);
 
   if (!message.content.startsWith(prefix) || message.author.bot) return;
 

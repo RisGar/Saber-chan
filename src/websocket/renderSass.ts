@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/class-name-casing */
+import fs from "fs";
 import sass from "node-sass";
 import path from "path";
-import fs from "fs";
 import logger from "./logs/logger";
 
 export default class renderSass {
@@ -54,5 +54,5 @@ export default class renderSass {
         }
       }
     );
-  };
+  }
 }

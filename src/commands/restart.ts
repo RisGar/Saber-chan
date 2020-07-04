@@ -18,13 +18,12 @@ module.exports = {
       }, 1000);
 
       setTimeout(() => {
-        msg.edit(`Restarting`);
+        msg.edit("Restarting");
       }, 5000);
 
       setTimeout(() => {
         // TODO: Restarting the bot
         
-
       }, 6000);
 
     });

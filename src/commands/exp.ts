@@ -1,17 +1,17 @@
 /* eslint-disable max-len */
-import Discord, { Channel } from "discord.js"
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const expDb = require("../exp/expDb.json")
+import Discord, { Channel } from "discord.js";
+// Eslint-disable-next-line @typescript-eslint/no-var-requires
+const expDb = require("../exp/expDb.json");
 
-export {}
+export {};
 
 module.exports = {
   name: "exp",
   description: "Show your current level and your exp",
   execute(message, args) {
-    const dbEntry = expDb[message.author.id]
+    const dbEntry = expDb[message.author.id];
 
-    // eslint-disable-next-line @typescript-eslint/unbound-method
+    // Eslint-disable-next-line @typescript-eslint/unbound-method
     const expEmbed = new Discord.MessageEmbed()
       .setColor("#00BFFF")
       .setAuthor(
@@ -25,8 +25,8 @@ module.exports = {
       .setFooter(
         "Saber-chan",
         "https://cdn.discordapp.com/avatars/629719032114970684/e619f816e4528964e907d369d28b63cc.jpg"
-      )
+      );
 
-    message.channel.send(expEmbed)
+    message.channel.send(expEmbed);
   },
-}
+};
