@@ -15,11 +15,18 @@ function addExp(message, author) {
             exp: 0,
             totalexp: 0,
             level: 0,
+            lastmessage: Date.now() - 60 * 1000,
         };
     }
-    const newExp = Math.floor(Math.random() * 10 + 15);
-    expDb[id].exp += newExp;
-    expDb[id].totalexp += newExp;
+    console.log(expDb[id].lastmessage);
+    console.log(Date.now());
+    if (Date.now() >= expDb[id].lastmessage + 60 * 1000) {
+        const newExp = Math.floor(Math.random() * 11) + 15;
+        expDb[id].exp += newExp;
+        expDb[id].totalexp += newExp;
+        console.log("Exp granted!");
+        expDb[id].lastmessage = Date.now();
+    }
     // eslint-disable-next-line no-restricted-properties
     const nextLvlExp = 5 * Math.pow(expDb[id].level, 2) + 50 * expDb[id].level + 100;
     if (expDb[id].exp >= nextLvlExp) {
